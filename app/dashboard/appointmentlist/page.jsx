@@ -6,7 +6,7 @@ export default function AppointmentList() {
     <section>
       <DashCard title="Appointment List" />
       <div className="mx-5 mt-10">
-        <div class="grid grid-cols-1 md:grid-cols-4 justify-between items-center gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-4 justify-between items-center gap-3">
           <AppointmentCard />
           <AppointmentCard />
           <AppointmentCard />
@@ -20,7 +20,7 @@ export default function AppointmentList() {
           <AppointmentCard />
           <AppointmentCard />
         </div>
-        <button class="mt-5 px-6 py-2 bg-[#5d956dbe] rounded-full text-white">
+        <button className="mt-5 px-6 py-2 bg-[#5d956dbe] rounded-full text-white">
           Load More
         </button>
       </div>

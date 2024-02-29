@@ -1,6 +1,5 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./redux/providers";
 import { AuthContextProvider } from "../components/authprovider/AuthContext";
 import Navigation from "@/components/Navigation";
 
@@ -16,10 +15,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <AuthContextProvider>
-          <Providers>
             <Navigation />
             {children}
-            </Providers>
         </AuthContextProvider>
       </body>
     </html>
