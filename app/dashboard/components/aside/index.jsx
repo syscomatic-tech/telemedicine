@@ -239,7 +239,7 @@ const AsideDashboard = () => {
               href="/dashboard/schedule"
               className={` ${
                 pathname == "/dashboard/schedule" ? "bg-[#5d956d7e]" : ""
-              } relative flex flex-row items-center focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+              } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
             >
               <span className="inline-flex justify-center items-center ml-4">
                 <FontAwesomeIcon
