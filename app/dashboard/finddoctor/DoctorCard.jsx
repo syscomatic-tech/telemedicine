@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function DoctorCard() {
   return (
-    <div className="rounded-xl overflow-hidden flex shadow hover:shadow-md bg-white cursor-pointer h-28">
+    <div className="rounded-xl overflow-hidden flex shadow hover:shadow-lg duration-500 bg-white cursor-pointer h-28">
       <div className="w-7/12 pl-3 p-3 text-text1 flex flex-col justify-center">
         <p className="text-base mb-2 font-bold truncate">Dr. Zahidul Hasan</p>
         <div className="text-xs text-primary mb-2">

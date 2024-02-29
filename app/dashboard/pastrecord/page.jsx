@@ -16,7 +16,7 @@ export default function PastRecord() {
         </div>
 
         <div className=" mx-auto mt-24 flex flex-col gap-y-5">
-          <div className=" bg-[#5d956d46] gap-y-2 shadow border rounded-xl overflow-hidden items-center justify-between px-10 py-5">
+          <div className=" bg-[#5d956d46] gap-y-2 hover:shadow-lg duration-500 border rounded-xl overflow-hidden items-center justify-between px-10 py-5">
             <div className="flex flex-col ">
               <p className="text-gray-500 mb-3">
                 Date: <span className="text-gray-900">12/12/2021</span>
@@ -33,7 +33,7 @@ export default function PastRecord() {
               </p>
             </div>
           </div>
-          <div className=" bg-[#5d956d46] gap-y-2 shadow border rounded-xl overflow-hidden items-center justify-between px-10 py-5">
+          <div className=" bg-[#5d956d46] gap-y-2 hover:shadow-lg duration-500 border rounded-xl overflow-hidden items-center justify-between px-10 py-5">
             <div className="flex flex-col ">
               <p className="text-gray-500 mb-3">
                 Date: <span className="text-gray-900">12/12/2021</span>

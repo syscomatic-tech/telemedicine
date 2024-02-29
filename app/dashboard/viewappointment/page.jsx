@@ -7,7 +7,7 @@ export default function ViewAppointment() {
       <DashCard title="View Appointment" />
       <div className="mx-5 mt-10">
         <div className="max-w-2xl mx-auto mt-24">
-          <div className="flex gap-3 bg-[#EDEEEE] shadow border rounded-xl overflow-hidden items-center justify-between px-5 md:px-10 py-5 mb-2">
+          <div className="flex gap-3 bg-[#EDEEEE] hover:shadow-xl duration-500 border rounded-xl overflow-hidden items-center justify-between px-5 md:px-10 py-5 mb-3">
             <div className="flex flex-col ">
               <p className="text-gray-500 mb-3">
                 Date: <span className="text-gray-900">12/12/2021</span>
@@ -29,7 +29,7 @@ export default function ViewAppointment() {
               </button>
             </div>
           </div>
-          <div className="flex gap-3 bg-[#EDEEEE] shadow border rounded-xl overflow-hidden items-center justify-between px-5 md:px-10 py-5 mb-2">
+          <div className="flex gap-3 bg-[#EDEEEE] hover:shadow-xl duration-500 border rounded-xl overflow-hidden items-center justify-between px-5 md:px-10 py-5 mb-3">
             <div className="flex flex-col ">
               <p className="text-gray-500 mb-3">
                 Date: <span className="text-gray-900">12/12/2021</span>
