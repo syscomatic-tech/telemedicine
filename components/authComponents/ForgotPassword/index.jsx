@@ -1,5 +1,4 @@
 "use client";
-import Animation from "@/components/animation";
 import React, { useState } from "react";
 
 const ForgotPassword = () => {
@@ -15,7 +14,7 @@ const ForgotPassword = () => {
   return (
     <section className="container mx-auto">
       <div className="bg-[#0C051F] absolute top-0 left-0 bottom-0 leading-5 h-full w-full overflow-hidden"></div>
-      <Animation />
+
       <div className="relative min-h-screen sm:flex sm:flex-row justify-center bg-transparent p-3">
         <div className="flex justify-center items-center self-center z-10 mt-[50%] md:mt-0 lg:mt-0 xl:mt-0">
           <div className="p-8 bg-white mx-auto rounded-3xl w-96 ">

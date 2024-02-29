@@ -1,6 +1,5 @@
 "use client";
 
-import Animation from "@/components/animation";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
@@ -13,8 +12,6 @@ const OtpVerify = () => {
   const [otp, setOtp] = useState("");
 
   const router = useRouter();
-
-  
 
   const handleOtpChange = (index, value) => {
     // Update the OTP value
@@ -159,7 +156,7 @@ const OtpVerify = () => {
   return (
     <section className="container mx-auto">
       <div className="absolute top-0 left-0 bg-[#0C051F] bottom-0 leading-5 h-full w-full overflow-hidden"></div>
-      <Animation />
+
       <div className="relative min-h-screen sm:flex sm:flex-row justify-center bg-transparent p-3">
         <div className="flex justify-center items-center self-center z-10 mt-[50%] md:mt-0 lg:mt-0 xl:mt-0">
           <div className="p-8 bg-white mx-auto rounded-3xl w-96 ">
@@ -215,7 +212,6 @@ const OtpVerify = () => {
                 </button>
               </div>
             </div>
-           
           </div>
         </div>
       </div>
