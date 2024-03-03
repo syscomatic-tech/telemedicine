@@ -70,7 +70,7 @@ const SignUp = () => {
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
         <div className="absolute inset-0 bg-gradient-to-r from-[#5d956dbe] to-[#5d956d88] shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
         <div className="relative bg-white shadow-lg sm:rounded-3xl sm:p-20">
-          <div className="max-w-xl mx-auto">
+          <div className="max-w-xl mx-auto p-5 md:p-0">
             <div>
               <h1 className="text-2xl font-semibold">Sign Up</h1>
             </div>

@@ -47,7 +47,7 @@ export default function SignIn() {
                       Password
                     </label>
                   </div>
-                  <div className="relative mt-3">
+                  <div className="relative mt-10">
                     <Link
                       href="/dashboard"
                       type="submit"
