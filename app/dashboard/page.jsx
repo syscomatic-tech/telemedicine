@@ -1,12 +1,10 @@
 "use client";
-import { UserAuth } from "@/components/authprovider/AuthContext";
-import { useRouter } from "next/navigation";
+
 import React, { useEffect } from "react";
 import DashCard from "./components/dashCard";
+import useProtectAuth from "../hooks/useProtectAuth";
 
 const Dashboard = () => {
-  const router = useRouter();
-  const { user } = UserAuth();
 
   // useEffect(() => {
   //   if (typeof window !== "undefined") {
@@ -17,8 +15,8 @@ const Dashboard = () => {
   //     }
   //   }
   // }, []);
+  useProtectAuth();
 
-  useEffect;
   return (
     <div>
       <DashCard title="Dashboard" />
