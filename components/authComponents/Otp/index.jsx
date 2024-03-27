@@ -34,7 +34,7 @@ const OtpVerify = () => {
   const verifyOtp = async () => {
     try {
       const response = await fetch(
-        "https://api.shardmind.io/api/v1/auth/otp/verify",
+        "https://tele.syscomatic.com/api/v1/auth/otp/verify",
         {
           method: "POST",
           headers: {
@@ -65,7 +65,7 @@ const OtpVerify = () => {
   const resendOtp = async () => {
     try {
       const response = await fetch(
-        "https://api.shardmind.io/api/v1/auth/otp/resend",
+        "https://tele.syscomatic.com/api/v1/auth/otp/resend",
         {
           method: "POST",
           headers: {
@@ -155,11 +155,9 @@ const OtpVerify = () => {
 
   return (
     <section className="container mx-auto">
-      <div className="absolute top-0 left-0 bg-[#0C051F] bottom-0 leading-5 h-full w-full overflow-hidden"></div>
-
       <div className="relative min-h-screen sm:flex sm:flex-row justify-center bg-transparent p-3">
         <div className="flex justify-center items-center self-center z-10 mt-[50%] md:mt-0 lg:mt-0 xl:mt-0">
-          <div className="p-8 bg-white mx-auto rounded-3xl w-96 ">
+          <div className="p-8 bg-white mx-auto rounded-3xl w-96  border shadow-md">
             <div className="mb-7">
               <h3 className="font-semibold text-2xl text-gray-800">
                 Email Verification{" "}
@@ -180,7 +178,7 @@ const OtpVerify = () => {
                   <div key={index} className="w-16 h-16">
                     <input
                       ref={inputRefs[index]}
-                      className="w-full h-full flex flex-col items-center justify-center text-center px-5 outline-none rounded-xl border border-gray-200 text-lg bg-white focus:bg-gray-50 focus:ring-1 ring-[#b14bf4]"
+                      className="w-full h-full flex flex-col items-center justify-center text-center px-5 outline-none rounded-xl border border-gray-200 text-lg bg-white focus:bg-gray-50 focus:ring-1 ring-[#5d956dbe]"
                       type="text"
                       name=""
                       id=""
@@ -206,7 +204,7 @@ const OtpVerify = () => {
               <div>
                 <button
                   onClick={verifyOtp}
-                  className="w-full flex justify-center btn_color_gradient hover:opacity-80 text-gray-100 p-3  rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500"
+                  className="w-full flex justify-center bg-[#5d956dbe] hover:opacity-80 text-gray-100 p-3 rounded-lg tracking-wide font-semibold cursor-pointer transition ease-in duration-500"
                 >
                   Confirm
                 </button>
@@ -215,7 +213,6 @@ const OtpVerify = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </section>
   );
 };

@@ -1,50 +1,76 @@
 "use client";
 import React, { useState } from "react";
-import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { UserAuth } from "@/components/authprovider/AuthContext";
 import { useRouter } from "next/navigation";
 
 const SignUp = () => {
-  const [username, setUsername] = useState("");
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [nidNo, setNidNo] = useState("");
+  const [dob, setDob] = useState(new Date().toISOString().split("T")[0]);
+  const [role, setRole] = useState("PT");
+  const [gender, setGender] = useState("");
+  const [address, setAddress] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { user, googleSignIn } = UserAuth();
 
   const router = useRouter();
 
-  const handleSignUp = async () => {
+  if (typeof window !== "undefined" && window.localStorage) {
+    // Attempt to retrieve the role from localStorage
+    const role = localStorage.getItem("role");
+    if (role) {
+      setRole(role);
+    }
+  } else {
+    console.warn(
+      "localStorage is not available in the current environment. Unable to retrieve user role."
+    );
+  }
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
     try {
-      const data = {
-        username,
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      const data = JSON.stringify({
+        userName,
         email,
+        dob,
+        gender,
+        nidNo,
+        phoneNumber,
         password,
-        role: "SH",
+        role: role,
+      });
+      console.log(data);
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: data,
+        redirect: "follow",
       };
-      const response = await fetch(
-        "https://api.shardmind.io/api/v1/auth/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      if (response.ok) {
-        toast("Please check your email", {
-          theme: "dark",
-        });
-        localStorage.setItem("email", email);
-        localStorage.setItem("username", username);
-        router.push("/authentication/otp");
-      } else {
-        toast(`Something went wrong!`, {
-          theme: "dark",
-        });
-      }
+
+      fetch(
+        "https://tele.syscomatic.com/api/v1/auth/admin/register",
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+          if (result.error) {
+            toast.error(result.error);
+          } else {
+            localStorage.setItem("email", email);
+            localStorage.setItem("username", userName);
+            router.push("/authentication/otp");
+          }
+        })
+        .catch((error) => console.error(error));
     } catch (error) {
       console.error("Error:", error);
     }
@@ -54,17 +80,6 @@ const SignUp = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      await googleSignIn();
-      toast("Successfully logged in", {
-        theme: "dark",
-      });
-      router.push("/dashboard/personalfeed");
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <div className="flex flex-col justify-center sm:py-12 h-screen">
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
@@ -74,23 +89,22 @@ const SignUp = () => {
             <div>
               <h1 className="text-2xl font-semibold">Sign Up</h1>
             </div>
-            <div >
-              <form className="">
-                <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7 grid grid-cols-1 md:grid-cols-2 gap-x-2 justify-center items-start">
+            <div>
+              <form onSubmit={handleSignUp}>
+                <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7 grid grid-cols-1 md:grid-cols-2 gap-x-2 justify-center items-start gap-5">
                   <div className="relative mt-[16px]">
                     <input
-                      autocomplete="off"
-                      id="username"
-                      name="username"
+                      id="userName"
+                      name="userName"
                       type="text"
                       required
                       className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
-                      placeholder="Username"
-                      // value={username}
-                      // onChange={(e) => setUsername(e.target.value)}
+                      placeholder="user Name "
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
                     />
                     <label
-                      for="username"
+                      htmlFor="username"
                       className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
                     >
                       Username
@@ -98,17 +112,17 @@ const SignUp = () => {
                   </div>
                   <div className="relative">
                     <input
-                      autocomplete="off"
                       id="email"
                       name="email"
-                      type="text"
+                      type="email"
+                      required
                       className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                       placeholder="Email address"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
                     <label
-                      for="email"
+                      htmlFor="email"
                       className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
                     >
                       Email Address
@@ -116,17 +130,17 @@ const SignUp = () => {
                   </div>
                   <div className="relative">
                     <input
-                      autocomplete="off"
                       id="password"
                       name="password"
                       type={showPassword ? "text" : "password"}
                       className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                       placeholder="Password"
                       value={password}
+                      required
                       onChange={(e) => setPassword(e.target.value)}
                     />
                     <label
-                      for="password"
+                      htmlFor="password"
                       className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
                     >
                       Password
@@ -143,9 +157,9 @@ const SignUp = () => {
                           stroke="currentColor"
                         >
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
                             d="M6 18L18 6M6 6l12 12"
                           />
                         </svg>
@@ -157,9 +171,9 @@ const SignUp = () => {
                           stroke="currentColor"
                         >
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                           />
                         </svg>
@@ -168,17 +182,16 @@ const SignUp = () => {
                   </div>
                   <div className="relative">
                     <input
-                      autocomplete="off"
-                      id="email"
-                      name="email"
+                      id="phoneNumber"
+                      name="phoneNumber"
                       type="text"
                       className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
-                      placeholder="Email address"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="01700000000"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
                     />
                     <label
-                      for="phone"
+                      htmlFor="phoneNumber"
                       className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
                     >
                       Phone Number
@@ -186,17 +199,16 @@ const SignUp = () => {
                   </div>
                   <div className="relative">
                     <input
-                      autocomplete="off"
-                      id="email"
-                      name="email"
+                      id="nidNo"
+                      name="nidNo"
                       type="text"
                       className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
-                      placeholder="Email address"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="8451235749"
+                      value={nidNo}
+                      onChange={(e) => setNidNo(e.target.value)}
                     />
                     <label
-                      for="phone"
+                      htmlFor="nidNo"
                       className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
                     >
                       NID / Passport
@@ -204,35 +216,36 @@ const SignUp = () => {
                   </div>
                   <div className="relative">
                     <input
-                      autocomplete="off"
                       id="dateofbirth"
                       name="dateofbirth"
                       type="date"
                       className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                       placeholder="date of birth"
-                      // value={email}
-                      // onChange={(e) => setEmail(e.target.value)}
+                      value={dob}
+                      onChange={(e) => setDob(e.target.value)}
                     />
                     <label
-                      for="phone"
+                      htmlFor="dateofbirth"
                       className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
                     >
                       Date of Birth
                     </label>
                   </div>
                   <div className="relative">
-                    <input
-                      autocomplete="off"
+                    <select
                       id="gender"
                       name="gender"
-                      type="text"
-                      className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
-                      placeholder="date of birth"
-                      // value={email}
-                      // onChange={(e) => setEmail(e.target.value)}
-                    />
+                      className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none text-sm"
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </select>
                     <label
-                      for="phone"
+                      htmlhtmlFor="gender"
                       className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
                     >
                       Gender
@@ -240,38 +253,31 @@ const SignUp = () => {
                   </div>
                   <div className="relative">
                     <input
-                      autocomplete="off"
                       id="address"
                       name="address"
                       type="text"
                       className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                       placeholder="address"
-                      // value={email}
-                      // onChange={(e) => setEmail(e.target.value)}
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
                     />
                     <label
-                      for="phone"
+                      htmlFor="address"
                       className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
                     >
-                      address
+                      Address
                     </label>
                   </div>
-
                   {/* submit */}
                   <div className="relative">
-                    <Link
+                    <button
                       type="submit"
-                      href="/dashboard"
                       className="bg-[#5d956dbe] text-white rounded-md px-2 py-1"
-                      onClick={handleSignUp}
                     >
                       Submit
-                    </Link>
+                    </button>
                   </div>
-                  
-
                 </div>
-                
               </form>
             </div>
           </div>

@@ -41,18 +41,18 @@ export default function Navigation() {
                 </a>
               </div>
               <div className="flex items-center justify-end gap-3">
-                <a
+                <Link
                   className="hidden items-center justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex"
-                  href="/authentication/signup"
+                  href="/usertypes"
                 >
                   Sign Up
-                </a>
-                <a
+                </Link>
+                <Link
                   className="inline-flex items-center justify-center rounded-xl bg-[#5D956D] px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-[#5d956dd1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
                   href="/usertypes"
                 >
                   Login
-                </a>
+                </Link>
               </div>
             </div>
           </div>
