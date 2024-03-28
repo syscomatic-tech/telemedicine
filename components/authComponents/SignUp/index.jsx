@@ -1,7 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const SignUp = () => {
@@ -11,28 +9,28 @@ const SignUp = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [nidNo, setNidNo] = useState("");
   const [dob, setDob] = useState(new Date().toISOString().split("T")[0]);
-  const [role, setRole] = useState("PT");
+  const [role, setRole] = useState("");
   const [gender, setGender] = useState("");
   const [address, setAddress] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter();
 
-  if (typeof window !== "undefined" && window.localStorage) {
-    // Attempt to retrieve the role from localStorage
-    const role = localStorage.getItem("role");
-    if (role) {
-      setRole(role);
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedRole = localStorage.getItem("role");
+      if (storedRole) {
+        setRole(storedRole);
+      }
+    } else {
+      console.warn(
+        "localStorage is not available in the current environment. Unable to retrieve user role."
+      );
     }
-  } else {
-    console.warn(
-      "localStorage is not available in the current environment. Unable to retrieve user role."
-    );
-  }
+  }, []);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-
     try {
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -67,6 +65,7 @@ const SignUp = () => {
           } else {
             localStorage.setItem("email", email);
             localStorage.setItem("username", userName);
+
             router.push("/authentication/otp");
           }
         })

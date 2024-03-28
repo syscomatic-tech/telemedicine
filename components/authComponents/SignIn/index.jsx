@@ -6,9 +6,7 @@ export default function SignIn() {
     const password = e.target.password.value;
 
     const myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Cookie", "currentUserRole=PT; jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjA0NDEzZjYwOWRmZmZjZDlmYmJkYzQiLCJyb2xlIjoiUFQiLCJpYXQiOjE3MTE1NjAyMzQsImV4cCI6MTcxNDE1MjIzNH0.9fQfmxiXZXPntS7w9Ud7lMCOX_-V3dAFo_j6hAhZC1o");
-
+    myHeaders.append("Content-Type", "application/json");
 
     const data = JSON.stringify({
       email,
@@ -27,7 +25,6 @@ myHeaders.append("Cookie", "currentUserRole=PT; jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6
         console.log(data);
         if (data.user) {
           localStorage.setItem("token", data.accessToken);
-          window.location.href = "/dashboard";
         } else {
           alert("Invalid email or password");
         }

@@ -9,15 +9,15 @@ export default function Home() {
   const pathname = usePathname();
   const { user } = UserAuth();
 
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     const { localStorage } = window;
-  //     const guard = localStorage.getItem("token");
-  //     if (!guard && !user) {
-  //       router.push("/authentication/signin");
-  //     }
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const { localStorage } = window;
+      const guard = localStorage.getItem("token");
+      if (!guard && !user) {
+        router.push("/authentication/signin");
+      }
+    }
+  }, []);
 
   return (
     <main>

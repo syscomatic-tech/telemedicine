@@ -10,7 +10,6 @@ export default function Role() {
   const handleUserTypes = (type) => {
     setUserType(type);
     localStorage.setItem("role", type);
-
     // Redirect to the next page
     router.push(`/authentication/signup`);
   };
