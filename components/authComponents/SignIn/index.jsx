@@ -1,5 +1,9 @@
 "use client";
+
+import { useRouter } from "next/navigation";
+
 export default function SignIn() {
+  const router = useRouter();
   const handleSignIn = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -25,6 +29,10 @@ export default function SignIn() {
         console.log(data);
         if (data.user) {
           localStorage.setItem("token", data.accessToken);
+          localStorage.setItem("userId", data.user._id);
+          localStorage.setItem("email", data.user.email);
+          localStorage.setItem("role", data.user.role);
+          router.push("/dashboard");
         } else {
           alert("Invalid email or password");
         }

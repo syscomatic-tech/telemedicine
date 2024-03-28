@@ -1,10 +1,6 @@
 "use client";
 import { UserAuth } from "@/components/authprovider/AuthContext";
-import {
-  faBell,
-  faImage,
-  faObjectGroup,
-} from "@fortawesome/free-regular-svg-icons";
+import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { motion } from "framer-motion";
 import {
   faBars,
@@ -29,8 +25,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const HeaderDashboard = () => {
   const [showDiv, setShowDiv] = useState(false);
@@ -42,17 +36,7 @@ const HeaderDashboard = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleGoogleSignOut = async () => {
-    try {
-      await logOut();
-      toast("Successfully logged out", {
-        theme: "dark",
-      });
-      router.push("/authentication/signin");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+ 
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -64,21 +48,12 @@ const HeaderDashboard = () => {
 
   const handleSignOut = async () => {
     try {
-      // const response = await fetch(
-      //   "https://api.shardmind.io/api/v1/auth/logout",
-      //   {
-      //     method: "GET",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // );
-
       localStorage.removeItem("token");
       localStorage.removeItem("email");
-      toast("Successfully logged out", {
-        theme: "dark",
-      });
+      localStorage.removeItem("userId");
+      localStorage.removeItem("username");
+      localStorage.removeItem("role");
+
       router.push("/authentication/signin");
     } catch (error) {
       console.error("Error:", error);
@@ -120,7 +95,7 @@ const HeaderDashboard = () => {
       <div className="flex justify-between items-center h-14 header-right ml-2 mr-5">
         <ul className="flex items-center justify-center">
           <li>
-            <button className=" duration-500 px-2 py-1 text-[#5d956dbe] mx-5 rounded-lg text-lg">
+            <button onClick={handleSignOut} className=" duration-500 px-2 py-1 text-[#5d956dbe] mx-5 rounded-lg text-lg">
               <FontAwesomeIcon
                 icon={faSignOut}
                 className="w-4 h-4 mr-1 text-[#5d956dbe]"
@@ -484,7 +459,6 @@ const HeaderDashboard = () => {
             </div>
           </li>
         </ul>
-        <ToastContainer />
       </div>
     </div>
   );

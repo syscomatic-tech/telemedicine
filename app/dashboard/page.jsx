@@ -1,17 +1,22 @@
 "use client";
 
+import { useEffect } from "react";
 import DashCard from "./components/dashCard";
+import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     const { localStorage } = window;
-  //     const guard = localStorage.getItem("token");
-  //     if (!guard && !user) {
-  //       router.push("/authentication/signin");
-  //     }
-  //   }
-  // }, []);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const { localStorage } = window;
+      const guard = localStorage.getItem("token");
+      if (!guard) {
+        router.push("/authentication/signin");
+      }
+    }
+  }, []);
 
   return (
     <div>
