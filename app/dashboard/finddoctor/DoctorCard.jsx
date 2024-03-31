@@ -1,11 +1,12 @@
 import { faStethoscope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function DoctorCard() {
+export default function DoctorCard({doctor}) {
+  const {userName, _id,  role, image} = doctor;
   return (
     <div className="rounded-xl overflow-hidden flex shadow hover:shadow-lg duration-500 bg-white cursor-pointer h-28">
       <div className="w-7/12 pl-3 p-3 text-text1 flex flex-col justify-center">
-        <p className="text-base mb-2 font-bold truncate">Dr. Zahidul Hasan</p>
+        <p className="text-base mb-2 font-bold truncate">{userName}</p>
         <div className="text-xs text-primary mb-2">
           <a className="flex items-center">
             <FontAwesomeIcon
