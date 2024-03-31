@@ -2,10 +2,7 @@
 import DatePicker from "react-multi-date-picker";
 import DashCard from "../components/dashCard";
 import { useEffect, useState } from "react";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import Icon from "react-multi-date-picker/components/icon";
-import gregorian from "react-date-object/calendars/gregorian";
-import gregorian_en from "react-date-object/locales/gregorian_en";
 import transition from "react-element-popper/animations/transition";
 
 export default function Schedule() {
