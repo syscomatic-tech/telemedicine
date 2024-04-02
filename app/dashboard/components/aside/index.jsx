@@ -25,6 +25,7 @@ const AsideDashboard = () => {
 
   const [role, setRole] = useState("");
   const [booking, setBooking] = useState({});
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -33,6 +34,16 @@ const AsideDashboard = () => {
       setRole(role);
       const booking = JSON.parse(localStorage.getItem("booking")) || {};
       setBooking(booking);
+      const userId = localStorage.getItem("userId");
+      fetch(`https://tele.syscomatic.com/api/v1/user/getuserInfoById/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data?.user?.userName);
+        setUserName(data?.user?.userName); // Assuming the response contains the user's name
+      })
+      .catch((error) => {
+        console.error("Error fetching user information:", error);
+      });
     }
   }, []);
 
@@ -65,7 +76,7 @@ const AsideDashboard = () => {
               />
               <div className="ml-2">
                 <span className="text-slate-600 font-semibold">
-                  Zahed Hasan
+                  {userName}
                 </span>{" "}
                 <br />
                 <span className="text-slate-600 font-serif bg-[#ACC8B5] rounded-full px-2 ">

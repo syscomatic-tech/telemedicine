@@ -7,10 +7,8 @@ export default function PastRecord() {
 
       <div className="mx-5 mt-10">
         <div className="flex ">
-          <button className="flex flex-row items-center justify-center min-w-[130px] px-4 rounded-full font-medium border disabled:cursor-not-allowed disabled:opacity-50 transition ease-in-out duration-150 text-base bg-[#5d956dbe] text-white  tracking-wide border-transparent py-1.5 h-[38px] mr-3">
-            Add More
-          </button>
-          <button className="flex flex-row items-center justify-center min-w-[130px] px-4 rounded-full font-medium border disabled:cursor-not-allowed disabled:opacity-50 transition ease-in-out duration-150 text-base bg-[#5d956dbe] text-white  tracking-wide border-transparent py-1.5 h-[38px]">
+          
+          <button className="flex flex-row ml-auto items-center justify-center min-w-[130px] px-4 rounded-full font-medium border disabled:cursor-not-allowed disabled:opacity-50 transition ease-in-out duration-150 text-base bg-[#5d956dbe] text-white  tracking-wide border-transparent py-1.5 h-[38px]">
             See All
           </button>
         </div>
