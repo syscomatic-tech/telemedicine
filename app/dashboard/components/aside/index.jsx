@@ -36,14 +36,14 @@ const AsideDashboard = () => {
       setBooking(booking);
       const userId = localStorage.getItem("userId");
       fetch(`https://tele.syscomatic.com/api/v1/user/getuserInfoById/${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data?.user?.userName);
-        setUserName(data?.user?.userName); // Assuming the response contains the user's name
-      })
-      .catch((error) => {
-        console.error("Error fetching user information:", error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data?.user?.userName);
+          setUserName(data?.user?.userName); // Assuming the response contains the user's name
+        })
+        .catch((error) => {
+          console.error("Error fetching user information:", error);
+        });
     }
   }, []);
 
@@ -75,9 +75,7 @@ const AsideDashboard = () => {
                 alt="user"
               />
               <div className="ml-2">
-                <span className="text-slate-600 font-semibold">
-                  {userName}
-                </span>{" "}
+                <span className="text-slate-600 font-semibold">{userName}</span>{" "}
                 <br />
                 <span className="text-slate-600 font-serif bg-[#ACC8B5] rounded-full px-2 ">
                   {roleDescription}
@@ -110,20 +108,35 @@ const AsideDashboard = () => {
                 pathname == "/dashboard/personalfeed" ? "bg-[#5d956d7e]" : ""
               } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
             >
-              <span className="inline-flex justify-center items-center ml-4">
-                <FontAwesomeIcon
-                  icon={faUserCircle}
-                  className={` text-black w-5 h-5`}
-                />
-              </span>
-              <span className="ml-2 text-lg tracking-wide truncate">
-                Profile
-              </span>
+              {role == "DC" ? (
+                <>
+                  <span className="inline-flex justify-center items-center ml-4">
+                    <FontAwesomeIcon
+                      icon={faUserDoctor}
+                      className={` text-black w-5 h-5`}
+                    />
+                  </span>
+                  <span className="ml-2 text-lg tracking-wide truncate">
+                    Doctor Profile
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="inline-flex justify-center items-center ml-4">
+                    <FontAwesomeIcon
+                      icon={faUserCircle}
+                      className={` text-black w-5 h-5`}
+                    />
+                  </span>
+                  <span className="ml-2 text-lg tracking-wide truncate">
+                    Profile
+                  </span>
+                </>
+              )}
             </Link>
           </li>
           {role == "DC" && (
             <>
-              
               <li>
                 <Link
                   href="/dashboard/viewtestresult"
@@ -162,7 +175,7 @@ const AsideDashboard = () => {
                   </span>
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/dashboard/doctorprofile"
                   className={` ${
@@ -181,7 +194,7 @@ const AsideDashboard = () => {
                     Doctor Profile
                   </span>
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href="/dashboard/appointmentlist"
