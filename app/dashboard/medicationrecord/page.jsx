@@ -8,7 +8,8 @@ export default function MedicationRecord() {
   const [medicationRecords, setMedicationRecords] = useState([]);
 
   useEffect(() => {
-    fetch("https://tele.syscomatic.com/api/v1/medication/getAllMedicationRecords")
+    const paitentId = localStorage.getItem("userId");
+    fetch(`https://tele.syscomatic.com/api/v1/medication/fetchPaitentMedicationById/${paitentId}`)
       .then(response => response.json())
       .then(data => {
         if (data) {

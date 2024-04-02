@@ -4,11 +4,13 @@ import DashCard from "../components/dashCard";
 import { useEffect, useState } from "react";
 import Icon from "react-multi-date-picker/components/icon";
 import transition from "react-element-popper/animations/transition";
+import Notification from "@/components/Global/Notification";
 
 export default function Schedule() {
   const [value, setValue] = useState(new Date());
   const [day, setDay] = useState("");
   const [selectedTime, setSelectedTime] = useState(null);
+  const [notificationTitle, setNotificationTitle] = useState("");
 
   useEffect(() => {
     // Update the booking object with the selected time
@@ -26,21 +28,22 @@ export default function Schedule() {
       date: day,
       time: time,
       doctorName: booking.doctorName,
+      doctorId: booking.doctorId,
+      paitentId: booking.patientId,
       Specialist: "Dentist",
     };
-console.log(bookingData);
     // Post booking data to the API
     fetch("https://tele.syscomatic.com/api/v1/schedule/createSchedule", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Add any additional headers if required
       },
       body: JSON.stringify(bookingData),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Booking data posted successfully:", data);
+        setNotificationTitle("Booking data posted successfully");
+        console.log("Success:", data);
       })
       .catch((error) => {
         console.error("Error posting booking data:", error);
@@ -100,6 +103,9 @@ console.log(bookingData);
           </div>
         )}
       </div>
+      {
+        notificationTitle && <Notification title={notificationTitle} />
+      }
     </section>
   );
 }

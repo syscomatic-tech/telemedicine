@@ -1,5 +1,4 @@
 "use client";
-import { UserAuth } from "@/components/authprovider/AuthContext";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -7,17 +6,16 @@ import { useEffect } from "react";
 export default function Home() {
   const router = useRouter();
   const pathname = usePathname();
-  const { user } = UserAuth();
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const { localStorage } = window;
-      const guard = localStorage.getItem("token");
-      if (!guard && !user) {
-        router.push("/authentication/signin");
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const { localStorage } = window;
+  //     const guard = localStorage.getItem("token");
+  //     if (!guard) {
+  //       router.push("/authentication/signin");
+  //     }
+  //   }
+  // }, []);
 
   return (
     <main>

@@ -24,12 +24,15 @@ const AsideDashboard = () => {
   const pathname = usePathname();
 
   const [role, setRole] = useState("");
+  const [booking, setBooking] = useState({});
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const { localStorage } = window;
       const role = localStorage.getItem("role");
       setRole(role);
+      const booking = JSON.parse(localStorage.getItem("booking")) || {};
+      setBooking(booking);
     }
   }, []);
 
@@ -109,26 +112,7 @@ const AsideDashboard = () => {
           </li>
           {role == "DC" && (
             <>
-              <li>
-                <Link
-                  href="/dashboard/viewappointment"
-                  className={` ${
-                    pathname == "/dashboard/viewappointment"
-                      ? "bg-[#5d956d7e]"
-                      : ""
-                  } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
-                >
-                  <span className="inline-flex justify-center items-center ml-4">
-                    <FontAwesomeIcon
-                      icon={faBookOpen}
-                      className={` text-black w-5 h-5`}
-                    />
-                  </span>
-                  <span className="ml-2 text-lg tracking-wide truncate">
-                    View Appoinment
-                  </span>
-                </Link>
-              </li>
+              
               <li>
                 <Link
                   href="/dashboard/viewtestresult"
@@ -212,26 +196,29 @@ const AsideDashboard = () => {
 
           {role == "PT" && (
             <>
-              <li>
-                <Link
-                  href="/dashboard/uploaddocument"
-                  className={` ${
-                    pathname == "/dashboard/uploaddocument"
-                      ? "bg-[#5d956d7e]"
-                      : ""
-                  } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
-                >
-                  <span className="inline-flex justify-center items-center ml-4">
-                    <FontAwesomeIcon
-                      icon={faUpload}
-                      className={` text-black w-5 h-5`}
-                    />
-                  </span>
-                  <span className="ml-2 text-lg tracking-wide truncate">
-                    Upload Document
-                  </span>
-                </Link>
-              </li>
+              {booking && (
+                <li>
+                  <Link
+                    href="/dashboard/uploaddocument"
+                    className={` ${
+                      pathname == "/dashboard/uploaddocument"
+                        ? "bg-[#5d956d7e]"
+                        : ""
+                    } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+                  >
+                    <span className="inline-flex justify-center items-center ml-4">
+                      <FontAwesomeIcon
+                        icon={faUpload}
+                        className={` text-black w-5 h-5`}
+                      />
+                    </span>
+                    <span className="ml-2 text-lg tracking-wide truncate">
+                      Upload Document
+                    </span>
+                  </Link>
+                </li>
+              )}
+
               <li>
                 <Link
                   href="/dashboard/medicationrecord"
@@ -272,24 +259,44 @@ const AsideDashboard = () => {
               </li>
               <li>
                 <Link
-                  href="/dashboard/schedule"
+                  href="/dashboard/viewappointment"
                   className={` ${
-                    pathname == "/dashboard/schedule" ? "bg-[#5d956d7e]" : ""
+                    pathname == "/dashboard/viewappointment"
+                      ? "bg-[#5d956d7e]"
+                      : ""
                   } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
                 >
                   <span className="inline-flex justify-center items-center ml-4">
                     <FontAwesomeIcon
-                      icon={faCalendarDays}
+                      icon={faBookOpen}
                       className={` text-black w-5 h-5`}
                     />
                   </span>
                   <span className="ml-2 text-lg tracking-wide truncate">
-                    Schedule
+                    View Appoinment
                   </span>
                 </Link>
               </li>
             </>
           )}
+          {/* <li>
+            <Link
+              href="/dashboard/schedule"
+              className={` ${
+                pathname == "/dashboard/schedule" ? "bg-[#5d956d7e]" : ""
+              } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+            >
+              <span className="inline-flex justify-center items-center ml-4">
+                <FontAwesomeIcon
+                  icon={faCalendarDays}
+                  className={` text-black w-5 h-5`}
+                />
+              </span>
+              <span className="ml-2 text-lg tracking-wide truncate">
+                Schedule
+              </span>
+            </Link>
+          </li> */}
         </ul>
       </div>
     </div>

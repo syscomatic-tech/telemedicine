@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Notification from "@/components/Global/Notification";
 
 const SignUp = () => {
   const [userName, setUserName] = useState("");
@@ -13,6 +14,7 @@ const SignUp = () => {
   const [gender, setGender] = useState("");
   const [address, setAddress] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [notificationTitle, setNotificationTitle] = useState("");
 
   const router = useRouter();
 
@@ -59,7 +61,7 @@ const SignUp = () => {
       )
         .then((response) => response.json())
         .then((result) => {
-          console.log(result);
+          setNotificationTitle(result.message);
           if (result.error) {
             toast.error(result.error);
           } else {
@@ -81,6 +83,7 @@ const SignUp = () => {
 
   return (
     <div className="flex flex-col justify-center sm:py-12 h-screen">
+      <Notification title={notificationTitle} />
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
         <div className="absolute inset-0 bg-gradient-to-r from-[#5d956dbe] to-[#5d956d88] shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
         <div className="relative bg-white shadow-lg sm:rounded-3xl sm:p-20">

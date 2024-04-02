@@ -25,6 +25,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
+import Notification from "@/components/Global/Notification";
 
 const HeaderDashboard = () => {
   const [showDiv, setShowDiv] = useState(false);
@@ -35,8 +36,6 @@ const HeaderDashboard = () => {
 
   const router = useRouter();
   const pathname = usePathname();
-
- 
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -95,7 +94,10 @@ const HeaderDashboard = () => {
       <div className="flex justify-between items-center h-14 header-right ml-2 mr-5">
         <ul className="flex items-center justify-center">
           <li>
-            <button onClick={handleSignOut} className=" duration-500 px-2 py-1 text-[#5d956dbe] mx-5 rounded-lg text-lg">
+            <button
+              onClick={handleSignOut}
+              className=" duration-500 px-2 py-1 text-[#5d956dbe] mx-5 rounded-lg text-lg"
+            >
               <FontAwesomeIcon
                 icon={faSignOut}
                 className="w-4 h-4 mr-1 text-[#5d956dbe]"
