@@ -9,7 +9,7 @@ export default function PastRecord() {
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     fetch(
-      `https://tele.syscomatic.com/api/v1/uplaodfile/fetchPaitentUploadsById/${1234444}`
+      `https://tele.syscomatic.com/api/v1/uplaodfile/fetchDoctorUploadsById/${userId}`
     )
       .then((response) => response.json())
       .then((data) => {

@@ -11,7 +11,7 @@ export default function Role() {
     setUserType(type);
     localStorage.setItem("role", type);
     // Redirect to the next page
-    router.push(`/authentication/signup`);
+    router.push(`/authentication/signin`);
   };
 
   return (
