@@ -35,15 +35,48 @@ const HeaderDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   const router = useRouter();
-  const pathname = usePathname();
+   const pathname = usePathname();
+
+  const [role, setRole] = useState("");
+  const [booking, setBooking] = useState({});
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    const checkAuthentication = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 50));
-      setLoading(false);
-    };
-    checkAuthentication();
-  }, [user]);
+    if (typeof window !== "undefined") {
+      const { localStorage } = window;
+      const role = localStorage.getItem("role");
+      setRole(role);
+      const booking = JSON.parse(localStorage.getItem("booking")) || {};
+      setBooking(booking);
+      const userId = localStorage.getItem("userId");
+      fetch(`https://tele.syscomatic.com/api/v1/user/getuserInfoById/${userId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data?.user?.userName);
+          setUserName(data?.user?.userName); // Assuming the response contains the user's name
+        })
+        .catch((error) => {
+          console.error("Error fetching user information:", error);
+        });
+    }
+  }, []);
+
+  let roleDescription;
+
+  switch (role) {
+    case "DC":
+      roleDescription = "Doctor";
+      break;
+    case "PT":
+      roleDescription = "Patient";
+      break;
+    case "AD":
+      roleDescription = "Admin";
+      break;
+    default:
+      roleDescription = "Unknown";
+  }
+
 
   const handleSignOut = async () => {
     try {
@@ -105,102 +138,7 @@ const HeaderDashboard = () => {
               Logout
             </button>
           </li>
-          <li className="relative">
-            <div className="">
-              {/* <img
-                onClick={() => setShowDiv(!showDiv)}
-                className="rounded-full cursor-pointer"
-                src={user?.photoURL || "https://i.ibb.co/QcK63FR/1.jpg"}
-                alt="user picture"
-              /> */}
-              <FontAwesomeIcon
-                icon={faBell}
-                className="w-7 h-7 mr-1 text-[#5d956dbe]"
-              />
-            </div>
-            {/* users card */}
-            <motion.div
-              // className={`transition-transform duration-300 ease-in-out transform ${
-              //   showDiv ? "translate-x-0" : "translate-x-full"
-              // }`}
-              initial={false}
-              animate={showDiv ? "open" : "closed"}
-              variants={variants}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-            >
-              {showDiv && (
-                <div className="bg_color_gradient absolute right-0 my-5 p-3 rounded-md flex flex-col justify-center items-center mx-auto w-56 transition-all">
-                  <img
-                    className="w-10 h-10 rounded-full"
-                    src={user?.photoURL || "https://i.ibb.co/QcK63FR/1.jpg"}
-                    alt=""
-                  />
-
-                  <p className="text-sm lg:text-md font-semibold text-white">
-                    {user?.displayName || userData?.username}
-                  </p>
-                  <p className="text-xs lg:text-sm mt-1 text-gray-200">
-                    {user?.email || userData?.email}
-                  </p>
-                  <div className="flex flex-col justify-center items-center ">
-                    {userData || user ? (
-                      <>
-                        <button
-                          onClick={handleSignOut}
-                          className={`${
-                            user ? "hidden" : "block"
-                          } group btn_color_gradient hover:scale-105 duration-500 text-white uppercase text-sm px-2 py-1 rounded-md mt-2 w-full`}
-                        >
-                          <FontAwesomeIcon
-                            icon={faSignOut}
-                            className="group-hover:rotate-90 duration-500 w-4 h-4 mr-1"
-                          />
-                          Sign Out
-                        </button>
-                        <button
-                          onClick={() => handleGoogleSignOut()}
-                          className={`${
-                            user ? "block" : "hidden"
-                          } group btn_color_gradient hover:scale-105 duration-500 text-white uppercase text-sm px-2 py-1 rounded-md mt-2 w-full`}
-                        >
-                          <FontAwesomeIcon
-                            icon={faSignOut}
-                            className="w-4 h-4 mr-1"
-                          />
-                          Sign Out
-                        </button>
-                      </>
-                    ) : (
-                      <Link href="/authentication/signin">
-                        <button className="group btn_color_gradient hover:scale-105 duration-500 text-white uppercase text-sm px-2 py-1 rounded-md mt-2 w-full">
-                          <FontAwesomeIcon
-                            icon={faSignIn}
-                            className="w-4 h-4 mr-1"
-                          />
-                          Sign In
-                        </button>
-                      </Link>
-                    )}
-
-                    <button className="group btn_color_gradient hover:scale-105 duration-500 text-white uppercase text-sm px-2 py-1 rounded-md mt-2 w-full">
-                      <FontAwesomeIcon
-                        icon={faQuestion}
-                        className="group-hover:rotate-[360deg] duration-700 w-4 h-4 mr-1"
-                      />{" "}
-                      FAQ & Support
-                    </button>
-                    <button className="group btn_color_gradient hover:scale-105 duration-500 text-white uppercase text-sm px-2 py-1 rounded-md mt-2 w-full flex justify-center content-center">
-                      <FontAwesomeIcon
-                        icon={faGear}
-                        className="group-hover:rotate-90 duration-500 w-4 h-4 mr-1"
-                      />{" "}
-                      Settings
-                    </button>
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          </li>
+          
           <li>
             <FontAwesomeIcon
               onClick={() => setShowAside(!showAside)}
@@ -216,246 +154,261 @@ const HeaderDashboard = () => {
               {showAside && (
                 <div className="bg-[#edeeee] absolute -right-5 my-5 p-3 flex flex-col justify-start items-center mx-auto w-60 h-[100vh]">
                   <ul className="flex flex-col py-4 space-y-1">
-                    <li>
-                      <Link
-                        href="/dashboard"
-                        className="px-5 flex cursor-pointer"
-                      >
-                        <img
-                          className="rounded-full w-12 h-12"
-                          src="https://i.ibb.co/QcK63FR/1.jpg"
-                          alt="user"
-                        />
-                        <div className="ml-2">
-                          <span className="text-slate-600 font-semibold">
-                            Zahed Hasan
-                          </span>{" "}
-                          <br />
-                          <span className="text-slate-600 font-serif bg-[#ACC8B5] rounded-full px-2 ">
-                            USER
-                          </span>
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/dashboard"
-                        className={` ${
-                          pathname == "/dashboard" ? "bg-[#5d956d7e]" : ""
-                        } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md mt-10`}
-                      >
-                        <span className="inline-flex justify-center items-center ml-4">
-                          <FontAwesomeIcon
-                            icon={faDashboard}
-                            className={` text-black w-5 h-5`}
-                          />
-                        </span>
-                        <span className="ml-2 text-lg tracking-wide truncate">
-                          Dashboard
-                        </span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/dashboard/personalfeed"
-                        className={` ${
-                          pathname == "/dashboard/personalfeed"
-                            ? "bg-[#5d956d7e]"
-                            : ""
-                        } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
-                      >
-                        <span className="inline-flex justify-center items-center ml-4">
-                          <FontAwesomeIcon
-                            icon={faUserCircle}
-                            className={` text-black w-5 h-5`}
-                          />
-                        </span>
-                        <span className="ml-2 text-lg tracking-wide truncate">
-                          Profile
-                        </span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/dashboard/uploaddocument"
-                        className={` ${
-                          pathname == "/dashboard/uploaddocument"
-                            ? "bg-[#5d956d7e]"
-                            : ""
-                        } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
-                      >
-                        <span className="inline-flex justify-center items-center ml-4">
-                          <FontAwesomeIcon
-                            icon={faUpload}
-                            className={` text-black w-5 h-5`}
-                          />
-                        </span>
-                        <span className="ml-2 text-lg tracking-wide truncate">
-                          Upload Document
-                        </span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/dashboard/viewappointment"
-                        className={` ${
-                          pathname == "/dashboard/viewappointment"
-                            ? "bg-[#5d956d7e]"
-                            : ""
-                        } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
-                      >
-                        <span className="inline-flex justify-center items-center ml-4">
-                          <FontAwesomeIcon
-                            icon={faBookOpen}
-                            className={` text-black w-5 h-5`}
-                          />
-                        </span>
-                        <span className="ml-2 text-lg tracking-wide truncate">
-                          View Appoinment
-                        </span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/dashboard/medicationrecord"
-                        className={` ${
-                          pathname == "/dashboard/medicationrecord"
-                            ? "bg-[#5d956d7e]"
-                            : ""
-                        } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
-                      >
-                        <span className="inline-flex justify-center items-center ml-4">
-                          <FontAwesomeIcon
-                            icon={faNewspaper}
-                            className={` text-black w-5 h-5`}
-                          />
-                        </span>
-                        <span className="ml-2 text-lg tracking-wide truncate">
-                          Medication Record
-                        </span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/dashboard/viewtestresult"
-                        className={` ${
-                          pathname == "/dashboard/viewtestresult"
-                            ? "bg-[#5d956d7e]"
-                            : ""
-                        } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
-                      >
-                        <span className="inline-flex justify-center items-center ml-4">
-                          <FontAwesomeIcon
-                            icon={faFileLines}
-                            className={` text-black w-5 h-5`}
-                          />
-                        </span>
-                        <span className="ml-2 text-lg tracking-wide truncate">
-                          View Test Result
-                        </span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/dashboard/finddoctor"
-                        className={` ${
-                          pathname == "/dashboard/finddoctor"
-                            ? "bg-[#5d956d7e]"
-                            : ""
-                        } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
-                      >
-                        <span className="inline-flex justify-center items-center ml-4">
-                          <FontAwesomeIcon
-                            icon={faStethoscope}
-                            className={` text-black w-5 h-5`}
-                          />
-                        </span>
-                        <span className="ml-2 text-lg tracking-wide truncate">
-                          Find Doctor
-                        </span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/dashboard/pastrecord"
-                        className={` ${
-                          pathname == "/dashboard/pastrecord"
-                            ? "bg-[#5d956d7e]"
-                            : ""
-                        } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
-                      >
-                        <span className="inline-flex justify-center items-center ml-4">
-                          <FontAwesomeIcon
-                            icon={faFolderOpen}
-                            className={` text-black w-5 h-5`}
-                          />
-                        </span>
-                        <span className="ml-2 text-lg tracking-wide truncate">
-                          Past Record
-                        </span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/dashboard/doctorprofile"
-                        className={` ${
-                          pathname == "/dashboard/doctorprofile"
-                            ? "bg-[#5d956d7e]"
-                            : ""
-                        } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
-                      >
-                        <span className="inline-flex justify-center items-center ml-4">
-                          <FontAwesomeIcon
-                            icon={faUserDoctor}
-                            className={` text-black w-5 h-5`}
-                          />
-                        </span>
-                        <span className="ml-2 text-lg tracking-wide truncate">
-                          Doctor Profile
-                        </span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/dashboard/appointmentlist"
-                        className={` ${
-                          pathname == "/dashboard/appointmentlist"
-                            ? "bg-[#5d956d7e]"
-                            : ""
-                        } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
-                      >
-                        <span className="inline-flex justify-center items-center ml-4">
-                          <FontAwesomeIcon
-                            icon={faBook}
-                            className={` text-black w-5 h-5`}
-                          />
-                        </span>
-                        <span className="ml-2 text-lg tracking-wide truncate">
-                          Appoinment List
-                        </span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/dashboard/schedule"
-                        className={` ${
-                          pathname == "/dashboard/schedule"
-                            ? "bg-[#5d956d7e]"
-                            : ""
-                        } relative flex flex-row items-center focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
-                      >
-                        <span className="inline-flex justify-center items-center ml-4">
-                          <FontAwesomeIcon
-                            icon={faCalendarDays}
-                            className={` text-black w-5 h-5`}
-                          />
-                        </span>
-                        <span className="ml-2 text-lg tracking-wide truncate">
-                          Schedule
-                        </span>
-                      </Link>
-                    </li>
-                  </ul>
+          <li>
+            <Link href="/dashboard" className="px-5 flex cursor-pointer">
+              <img
+                className="rounded-full w-12 h-12"
+                src="https://i.ibb.co/QcK63FR/1.jpg"
+                alt="user"
+              />
+              <div className="ml-2">
+                <span className="text-slate-600 font-semibold">{userName}</span>{" "}
+                <br />
+                <span className="text-slate-600 font-serif bg-[#ACC8B5] rounded-full px-2 ">
+                  {roleDescription}
+                </span>
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/dashboard"
+              className={` ${
+                pathname == "/dashboard" ? "bg-[#5d956d7e]" : ""
+              } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md mt-10`}
+            >
+              <span className="inline-flex justify-center items-center ml-4">
+                <FontAwesomeIcon
+                  icon={faDashboard}
+                  className={` text-black w-5 h-5`}
+                />
+              </span>
+              <span className="ml-2 text-lg tracking-wide truncate">
+                Dashboard
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/dashboard/personalfeed"
+              className={` ${
+                pathname == "/dashboard/personalfeed" ? "bg-[#5d956d7e]" : ""
+              } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+            >
+              {role == "DC" ? (
+                <>
+                  <span className="inline-flex justify-center items-center ml-4">
+                    <FontAwesomeIcon
+                      icon={faUserDoctor}
+                      className={` text-black w-5 h-5`}
+                    />
+                  </span>
+                  <span className="ml-2 text-lg tracking-wide truncate">
+                    Doctor Profile
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="inline-flex justify-center items-center ml-4">
+                    <FontAwesomeIcon
+                      icon={faUserCircle}
+                      className={` text-black w-5 h-5`}
+                    />
+                  </span>
+                  <span className="ml-2 text-lg tracking-wide truncate">
+                    Profile
+                  </span>
+                </>
+              )}
+            </Link>
+          </li>
+          {role == "DC" && (
+            <>
+              <li>
+                <Link
+                  href="/dashboard/viewtestresult"
+                  className={` ${
+                    pathname == "/dashboard/viewtestresult"
+                      ? "bg-[#5d956d7e]"
+                      : ""
+                  } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+                >
+                  <span className="inline-flex justify-center items-center ml-4">
+                    <FontAwesomeIcon
+                      icon={faFileLines}
+                      className={` text-black w-5 h-5`}
+                    />
+                  </span>
+                  <span className="ml-2 text-lg tracking-wide truncate">
+                    View Test Result
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/dashboard/pastrecord"
+                  className={` ${
+                    pathname == "/dashboard/pastrecord" ? "bg-[#5d956d7e]" : ""
+                  } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+                >
+                  <span className="inline-flex justify-center items-center ml-4">
+                    <FontAwesomeIcon
+                      icon={faFolderOpen}
+                      className={` text-black w-5 h-5`}
+                    />
+                  </span>
+                  <span className="ml-2 text-lg tracking-wide truncate">
+                    Past Record
+                  </span>
+                </Link>
+              </li>
+              {/* <li>
+                <Link
+                  href="/dashboard/doctorprofile"
+                  className={` ${
+                    pathname == "/dashboard/doctorprofile"
+                      ? "bg-[#5d956d7e]"
+                      : ""
+                  } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+                >
+                  <span className="inline-flex justify-center items-center ml-4">
+                    <FontAwesomeIcon
+                      icon={faUserDoctor}
+                      className={` text-black w-5 h-5`}
+                    />
+                  </span>
+                  <span className="ml-2 text-lg tracking-wide truncate">
+                    Doctor Profile
+                  </span>
+                </Link>
+              </li> */}
+              <li>
+                <Link
+                  href="/dashboard/appointmentlist"
+                  className={` ${
+                    pathname == "/dashboard/appointmentlist"
+                      ? "bg-[#5d956d7e]"
+                      : ""
+                  } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+                >
+                  <span className="inline-flex justify-center items-center ml-4">
+                    <FontAwesomeIcon
+                      icon={faBook}
+                      className={` text-black w-5 h-5`}
+                    />
+                  </span>
+                  <span className="ml-2 text-lg tracking-wide truncate">
+                    Appoinment List
+                  </span>
+                </Link>
+              </li>
+            </>
+          )}
+
+          {role == "PT" && (
+            <>
+              {booking && (
+                <li>
+                  <Link
+                    href="/dashboard/uploaddocument"
+                    className={` ${
+                      pathname == "/dashboard/uploaddocument"
+                        ? "bg-[#5d956d7e]"
+                        : ""
+                    } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+                  >
+                    <span className="inline-flex justify-center items-center ml-4">
+                      <FontAwesomeIcon
+                        icon={faUpload}
+                        className={` text-black w-5 h-5`}
+                      />
+                    </span>
+                    <span className="ml-2 text-lg tracking-wide truncate">
+                      Upload Document
+                    </span>
+                  </Link>
+                </li>
+              )}
+
+              <li>
+                <Link
+                  href="/dashboard/medicationrecord"
+                  className={` ${
+                    pathname == "/dashboard/medicationrecord"
+                      ? "bg-[#5d956d7e]"
+                      : ""
+                  } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+                >
+                  <span className="inline-flex justify-center items-center ml-4">
+                    <FontAwesomeIcon
+                      icon={faNewspaper}
+                      className={` text-black w-5 h-5`}
+                    />
+                  </span>
+                  <span className="ml-2 text-lg tracking-wide truncate">
+                    Medication Record
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/dashboard/finddoctor"
+                  className={` ${
+                    pathname == "/dashboard/finddoctor" ? "bg-[#5d956d7e]" : ""
+                  } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+                >
+                  <span className="inline-flex justify-center items-center ml-4">
+                    <FontAwesomeIcon
+                      icon={faStethoscope}
+                      className={` text-black w-5 h-5`}
+                    />
+                  </span>
+                  <span className="ml-2 text-lg tracking-wide truncate">
+                    Find Doctor
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/dashboard/viewappointment"
+                  className={` ${
+                    pathname == "/dashboard/viewappointment"
+                      ? "bg-[#5d956d7e]"
+                      : ""
+                  } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+                >
+                  <span className="inline-flex justify-center items-center ml-4">
+                    <FontAwesomeIcon
+                      icon={faBookOpen}
+                      className={` text-black w-5 h-5`}
+                    />
+                  </span>
+                  <span className="ml-2 text-lg tracking-wide truncate">
+                    View Appoinment
+                  </span>
+                </Link>
+              </li>
+            </>
+          )}
+          {/* <li>
+            <Link
+              href="/dashboard/schedule"
+              className={` ${
+                pathname == "/dashboard/schedule" ? "bg-[#5d956d7e]" : ""
+              } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+            >
+              <span className="inline-flex justify-center items-center ml-4">
+                <FontAwesomeIcon
+                  icon={faCalendarDays}
+                  className={` text-black w-5 h-5`}
+                />
+              </span>
+              <span className="ml-2 text-lg tracking-wide truncate">
+                Schedule
+              </span>
+            </Link>
+          </li> */}
+        </ul>
                 </div>
               )}
             </div>
