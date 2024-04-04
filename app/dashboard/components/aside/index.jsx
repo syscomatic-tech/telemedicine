@@ -68,7 +68,7 @@ const AsideDashboard = () => {
       <div className="overflow-y-auto overflow-x-hidden flex flex-col justify-between flex-grow ">
         <ul className="flex flex-col py-4 space-y-1">
           <li>
-            <Link href="/dashboard" className="px-5 flex cursor-pointer">
+            <Link href="/dashboard" className="px-5 flex cursor-pointer mb-10">
               <img
                 className="rounded-full w-12 h-12"
                 src="https://i.ibb.co/QcK63FR/1.jpg"
@@ -83,24 +83,29 @@ const AsideDashboard = () => {
               </div>
             </Link>
           </li>
-          <li>
-            <Link
-              href="/dashboard"
-              className={` ${
-                pathname == "/dashboard" ? "bg-[#5d956d7e]" : ""
-              } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md mt-10`}
-            >
-              <span className="inline-flex justify-center items-center ml-4">
-                <FontAwesomeIcon
-                  icon={faDashboard}
-                  className={` text-black w-5 h-5`}
-                />
-              </span>
-              <span className="ml-2 text-lg tracking-wide truncate">
-                Dashboard
-              </span>
-            </Link>
-          </li>
+          {role == "AD" && (
+            <>
+              <li>
+                <Link
+                  href="/dashboard"
+                  className={` ${
+                    pathname == "/dashboard" ? "bg-[#5d956d7e]" : ""
+                  } relative flex flex-row items-center h-11 focus:outline-none text-white-600 hover:text-white-800 pr-6 rounded-md `}
+                >
+                  <span className="inline-flex justify-center items-center ml-4">
+                    <FontAwesomeIcon
+                      icon={faDashboard}
+                      className={` text-black w-5 h-5`}
+                    />
+                  </span>
+                  <span className="ml-2 text-lg tracking-wide truncate">
+                    Dashboard
+                  </span>
+                </Link>
+              </li>
+            </>
+          )}
+
           <li>
             <Link
               href="/dashboard/personalfeed"

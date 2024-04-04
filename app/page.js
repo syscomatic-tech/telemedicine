@@ -1,4 +1,5 @@
 "use client";
+import Navigation from "@/components/Navigation";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -18,10 +19,13 @@ export default function Home() {
   // }, []);
 
   return (
-    <main>
+    <main className="bg_custom_background h-screen lg:mt-0">
+      {/* https://i.ibb.co/H79jbzh/allianz-telehealth-doctor-2.png */}
+      <div className="pt-5"><Navigation /></div>
       <section className="">
-        <div className="container mx-auto flex flex-col items-center px-4 py-16 mt-20 text-center md:py-32 md:px-10 lg:px-32 xl:max-w-3xl">
-          <h1 className="text-4xl font-bold leadi sm:text-5xl">
+      
+        <div className="container mx-auto flex flex-col items-center  px-4 py-16 text-center md:py-32 md:px-10 lg:px-32 xl:max-w-3xl">
+          <h1 className="text-4xl font-bold sm:text-5xl">
             Echo
             <span className="text-[#5D956D] ml-2">Medix</span>
           </h1>
