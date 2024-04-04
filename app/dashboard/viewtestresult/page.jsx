@@ -81,10 +81,12 @@ export default function ViewTestResult() {
   }
 
   useEffect(() => {
-    fetch("https://tele.syscomatic.com/api/v1/viewTestresult/alltestresults")
+    const id = localStorage.getItem("userId")
+    fetch(`https://tele.syscomatic.com/api/v1/viewTestresult/getTestResultByUserId/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        setTestResults(data);
+        setTestResults(data?.testResult);
+        console.log(data?.testResult);
       })
       .catch((error) => {
         console.error("Error fetching test results:", error);
@@ -131,10 +133,11 @@ export default function ViewTestResult() {
 
   // Function to delete test result
   function deleteTestResult(id) {
+    console.log(id);
     const updatedResults = testResults.filter((result) => result._id !== id);
     setTestResults(updatedResults);
     fetch(
-      `https://tele.syscomatic.com/api/v1/viewTestresult/testResultId/${id}`,
+      `https://tele.syscomatic.com/api/v1/viewTestresult/deleteTestResultById/${id}`,
       {
         method: "DELETE",
       }
@@ -193,12 +196,12 @@ export default function ViewTestResult() {
                   </td>
                   <td>
                     <div className="flex justify-between items-center gap-x-1 mx-1">
-                      {/* <button
+                      <button
                         className="text-xs bg-red-300 rounded-md p-1 w-full"
                         onClick={() => deleteTestResult(testResult._id)}
                       >
                         Delete
-                      </button> */}
+                      </button>
                       <button
                         className="text-xs bg-yellow-300 rounded-md p-1 w-full"
                         onClick={() => openModal(testResult._id)} // Open modal for updating test result
