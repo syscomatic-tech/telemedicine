@@ -35,6 +35,7 @@ export default function MedicationRecord() {
                 <th className="py-2 px-4 text-left">Name</th>
                 <th className="py-2 px-4 text-left">Morning</th>
                 <th className="py-2 px-4 text-left">Afternoon</th>
+                <th className="py-2 px-4 text-left">evening</th>
                 <th className="py-2 px-4 text-left">Night</th>
                 <th className="py-2 px-4 text-left">Days remaining</th>
               </tr>
@@ -53,6 +54,12 @@ export default function MedicationRecord() {
                     <FontAwesomeIcon
                       icon={record.afternoon ? faCheck : faTimes}
                       style={{ color: record.afternoon ? "#63E6BE" : "#FF0000" }}
+                    />
+                  </td>
+                  <td className="py-2 px-4 text-xl">
+                    <FontAwesomeIcon
+                      icon={record.evening ? faCheck : faTimes}
+                      style={{ color: record.evening ? "#63E6BE" : "#FF0000" }}
                     />
                   </td>
                   <td className="py-2 px-4 text-xl">
